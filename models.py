@@ -1,3 +1,5 @@
+import datetime
+
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -19,4 +21,8 @@ class Message(db.Model):
     username = db.Column(db.Text, nullable=False)
     # TODO: I have no idea if this plays nicely with timezones or not, I have a vague recollection
     # of python's datetime having tz-aware as the default.
-    when_created = db.Column(db.DateTime, nullable=False, index=True)
+    when_created = db.Column(
+        db.DateTime,
+        nullable=False,
+        index=True,
+        default=datetime.datetime.utcnow())
