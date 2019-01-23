@@ -77,7 +77,7 @@
       $.each(response.results, function(idx, msg) {
         var newElem = $(msgTemplate);
         var itsMe = msg.username === myUsername;
-        var displayUsername = itsMe ? 'You' : msg.username;
+        var displayUsername = itsMe ? `You (${myUsername})` : msg.username;
         newElem.find('.username').text(displayUsername);
         newElem.find('.content').text(msg.content);
         newElem.find('.timestamp').text(msg.when_created);
