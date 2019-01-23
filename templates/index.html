@@ -3,8 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <title>Rabble Rabble Rabble</title>
+  <!--
+  I never learned how to do anything without bootstrap and jquery :(
+  But on the other hand, spec says "make sure it works on a wide range of
+  browsers, and this will pull down a whole bunch of shims 😅
+  -->
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+  <style type="text/css">
+    .msg .username, .msg .timestamp {
+      color: grey;
+      font-size: 0.8em;
+    }
+
+    .msg {
+      margin-top: 8pt;
+    }
+
+    .message-container {
+      margin: 8pt;
+    }
+
+    .send-form {
+      background-color: lightgrey;
+    }
+  </style>
 </head>
 <body>
-Rabble rabble rabble
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <div class="message-container">
+        <!-- This is just temporary until we figure out AJAX -->
+        {% for msg in messages %}
+        <div class="msg">
+          <div class="username">{{ msg.username }}</div>
+          <div class="content">{{ msg.content }}</div>
+          <div class="timestamp">{{ msg.when_created }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      <form>
+        <div class="card send-form">
+          <div class="card-body input-group">
+            <input type="text" class="form-control" placeholder="Rabble rabble rabble..."/>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-primary">Send</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 </body>
 </html>
