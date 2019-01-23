@@ -14,9 +14,9 @@
         crossorigin="anonymous">
 
   <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
   <style type="text/css">
     .msg .username, .msg .timestamp {
       color: grey;
@@ -34,27 +34,40 @@
     .send-form {
       background-color: lightgrey;
     }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      padding: 8pt;
+    }
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="row">
-    <div class="col-sm">
-      <div class="message-container">
-      </div>
-      <form id="message-input">
-        <div class="card send-form">
-          <div class="card-body input-group">
-            <input type="hidden" value="{{random_username}}" name="username" />
-            <input type="text" class="form-control" name="content" placeholder="Rabble rabble rabble..."/>
-            <div class="input-group-append">
-              <button class="btn btn-primary">Send</button>
-            </div>
-          </div>
+<div class="d-flex flex-column container" style="height: 100%">
+  <div class="flex-grow-0" style="overflow-y: scroll">
+    <div class="row">
+      <div class="col-sm">
+        <div class="message-container">
         </div>
-      </form>
+      </div>
+    </div>
+    <div>
     </div>
   </div>
+  <form id="message-input">
+      <div class="card send-form">
+        <div class="card-body input-group">
+          <input type="hidden" value="{{random_username}}" name="username"/>
+          <input type="text" class="form-control" name="content"
+                 placeholder="Rabble rabble rabble..."/>
+          <div class="input-group-append">
+            <button class="btn btn-primary">Send</button>
+          </div>
+        </div>
+      </div>
+    </form>
 </div>
 <script type="text/javascript">
   var msgTemplate = `
@@ -63,18 +76,18 @@
       <div class="content"></div>
       <div class="timestamp"></div>
     </div>`;
-  var loadMessages = function() {
+  var loadMessages = function () {
     $.get({
       // TODO render this URL with jinja / flask
       url: '/api/messages',
-    }).done(function(response) {
+    }).done(function (response) {
       // Wipe existing messages
       var messageContainer = $('.message-container');
       messageContainer.empty();
 
       var myUsername = $('[name=username]').val();
 
-      $.each(response.results, function(idx, msg) {
+      $.each(response.results, function (idx, msg) {
         var newElem = $(msgTemplate);
         var itsMe = msg.username === myUsername;
         var displayUsername = itsMe ? `You (${myUsername})` : msg.username;
@@ -86,6 +99,9 @@
           newElem.addClass('rounded border border-primary');
         }
       });
+      // Scroll to end. This is going to get _really_ annoying if the content
+      // hasn't changed but we're out of time.
+      messageContainer.children().last()[0].scrollIntoView();
     });
   };
 
@@ -93,17 +109,17 @@
   // on making it better after this commit.
   setInterval(loadMessages, 5000);
 
-  $(document).ready(function() {
+  $(document).ready(function () {
     loadMessages();
   });
-  $('#message-input').submit(function() {
+  $('#message-input').submit(function () {
     const form = $(this);
     $.ajax({
       type: 'post',
       // TODO render this URL with jinja / flask
       url: '/api/messages',
       data: form.serialize(),
-    }).done(function() {
+    }).done(function () {
       // Wow it's weird you can't use .empty() here.
       form.find('[name=content]').val('');
       loadMessages();
