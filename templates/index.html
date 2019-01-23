@@ -89,6 +89,10 @@
     });
   };
 
+  // Every 5 seconds, refresh. This is going to be super choppy, but we'll work
+  // on making it better after this commit.
+  setInterval(loadMessages, 5000);
+
   $(document).ready(function() {
     loadMessages();
   });
