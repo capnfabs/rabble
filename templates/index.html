@@ -45,7 +45,7 @@
       <form id="message-input">
         <div class="card send-form">
           <div class="card-body input-group">
-            <input type="hidden" value="A Badger" name="username" />
+            <input type="hidden" value="{{random_username}}" name="username" />
             <input type="text" class="form-control" name="content" placeholder="Rabble rabble rabble..."/>
             <div class="input-group-append">
               <button class="btn btn-primary">Send</button>
@@ -72,12 +72,19 @@
       var messageContainer = $('.message-container');
       messageContainer.empty();
 
+      var myUsername = $('[name=username]').val();
+
       $.each(response.results, function(idx, msg) {
         var newElem = $(msgTemplate);
-        newElem.find('.username').text(msg.username);
+        var itsMe = msg.username === myUsername;
+        var displayUsername = itsMe ? 'You' : msg.username;
+        newElem.find('.username').text(displayUsername);
         newElem.find('.content').text(msg.content);
         newElem.find('.timestamp').text(msg.when_created);
         messageContainer.append(newElem);
+        if (itsMe) {
+          newElem.addClass('rounded border border-primary');
+        }
       });
     });
   };
