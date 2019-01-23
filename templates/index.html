@@ -12,6 +12,11 @@
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
         crossorigin="anonymous">
+
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
   <style type="text/css">
     .msg .username, .msg .timestamp {
       color: grey;
@@ -45,12 +50,13 @@
         </div>
         {% endfor %}
       </div>
-      <form>
+      <form id="message-input">
         <div class="card send-form">
           <div class="card-body input-group">
-            <input type="text" class="form-control" placeholder="Rabble rabble rabble..."/>
+            <input type="hidden" value="A Badger" name="username" />
+            <input type="text" class="form-control" name="content" placeholder="Rabble rabble rabble..."/>
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary">Send</button>
+              <button class="btn btn-primary">Send</button>
             </div>
           </div>
         </div>
@@ -58,5 +64,18 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $('#message-input').submit(function() {
+    const form = $(this);
+    $.ajax({
+      type: 'post',
+      // TODO render this URL with jinja / flask
+      url: '/api/messages',
+      data: form.serialize(),
+    });
+    // TODO: chain the success and reload messages.
+    return false;
+  });
+</script>
 </body>
 </html>

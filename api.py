@@ -19,7 +19,7 @@ def get_messages():
 
 @blueprint.route('/messages', methods=['POST'])
 def post_message():
-    obj = request.json
+    obj = request.form
     msg = Message(
         content=obj['content'],
         username=obj['username'])
