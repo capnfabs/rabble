@@ -12,11 +12,10 @@ def create_app():
     import models
     models.db.init_app(app)
 
-    @app.route('/')
-    def hello_world():
-        return 'Hello, World!'
-
     import api
     app.register_blueprint(api.blueprint)
+
+    import frontend
+    app.register_blueprint(frontend.blueprint)
 
     return app
